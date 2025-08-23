@@ -61,7 +61,7 @@ controller = load_controller()
 st.markdown('<h1 class="main-header">🏎️ FinishLine</h1>', unsafe_allow_html=True)
 st.markdown('<h3 class="subtitle">F1 Race Outcome Predictor</h3>', unsafe_allow_html=True)
 
-with open("links.json", "r", encoding="utf-8") as f:
+with open("data/links.json", "r", encoding="utf-8") as f:
     LINKS = json.load(f)
 
 # F1 tracks list 
