@@ -2,7 +2,7 @@ import joblib, pandas as pd, requests, json, random
 from bs4 import BeautifulSoup
 from datetime import date
 
-with open("links.json", "r", encoding="utf-8") as f:
+with open("data/links.json", "r", encoding="utf-8") as f:
     LINKS = json.load(f)
 
 points_map = {
@@ -20,13 +20,13 @@ points_map = {
 
 class Controller:
     def __init__(self):
-        self.nn_pre_quali = joblib.load("nn_pre_quali.pkl")
-        self.nn_post_quali = joblib.load("nn_post_quali.pkl")
-        self.rf_pre_quali = joblib.load("rf_pre_quali.pkl")
-        self.rf_post_quali = joblib.load("rf_post_quali.pkl")
-        self.drivers = pd.read_csv('drivers.csv')
-        self.preprocessor_post = joblib.load("preprocessor_post.pkl")
-        self.preprocessor_pre = joblib.load("preprocessor_pre.pkl")
+        self.nn_pre_quali = joblib.load("models/nn_pre_quali.pkl")
+        self.nn_post_quali = joblib.load("models/nn_post_quali.pkl")
+        self.rf_pre_quali = joblib.load("models/rf_pre_quali.pkl")
+        self.rf_post_quali = joblib.load("models/rf_post_quali.pkl")
+        self.drivers = pd.read_csv('data/drivers.csv')
+        self.preprocessor_post = joblib.load("models/preprocessor_post.pkl")
+        self.preprocessor_pre = joblib.load("models/preprocessor_pre.pkl")
         self.team_map = {
             'Alpine F1 Team': "Alpine",
             'Haas F1 Team': "Haas",
@@ -119,12 +119,9 @@ class Controller:
         
     def predict_season(self):
         current = self.get_standings()
-        rem = {"id": 44, "day": 326, "url_quali": "https://www.formula1.com/en/results/2025/races/1274/las-vegas/qualifying", "url_race": "https://www.formula1.com/en/results/2025/races/1274/las-vegas/race-result"}
-        choices = list(LINKS.values())
-        choices.remove(rem)
         for link_set in LINKS.values():
             if link_set['day'] > int(date.today().strftime("%j")):
-                ranking = self.predict({"mode":"pre_qualifying", 'track':link_set['id'] if link_set['id'] != 44 else random.choice(choices)['id']})
+                ranking = self.predict({"mode":"pre_qualifying", 'track':link_set['id']})
                 for i in range(10):
                     current.loc[current.Code == ranking[i], "Points"] += points_map[i+1]
         return current.sort_values(by="Points", ascending=False).reset_index(drop=True)
