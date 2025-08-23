@@ -41,6 +41,12 @@ st.markdown("""
         font-weight: bold;
         margin: 0.5rem 0;
     }
+    .subtitle {
+        font-size: 2rem;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 1rem;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -52,7 +58,8 @@ def load_controller():
 controller = load_controller()
 
 # Main header
-st.markdown('<h1 class="main-header">🏎️ F1 Race Outcome Predictor</h1>', unsafe_allow_html=True)
+st.markdown('<h1 class="main-header">🏎️ FinishLine</h1>', unsafe_allow_html=True)
+st.markdown('<h3 class="subtitle">F1 Race Outcome Predictor</h3>', unsafe_allow_html=True)
 
 with open("links.json", "r", encoding="utf-8") as f:
     LINKS = json.load(f)
