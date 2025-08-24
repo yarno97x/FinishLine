@@ -3,6 +3,30 @@ import pandas as pd, json
 from datetime import date, datetime
 from controller import Controller
 
+drivers = {
+    "ALB": "Alexander Albon",
+    "ALO": "Fernando Alonso",
+    "ANT": "Kimi Antonelli",
+    "BEA": "Oliver Bearman",
+    "BOR": "Gabriel Bortoleto",
+    "COL": "Franco Colapinto",
+    "GAS": "Pierre Gasly",
+    "HAD": "Isack Hadjar",
+    "HAM": "Lewis Hamilton",
+    "HUL": "Nico Hulkenberg",
+    "LAW": "Liam Lawson",
+    "LEC": "Charles Leclerc",
+    "NOR": "Lando Norris",
+    "OCO": "Esteban Ocon",
+    "PIA": "Oscar Piastri",
+    "RUS": "George Russell",
+    "SAI": "Carlos Sainz",
+    "STR": "Lance Stroll",
+    "TSU": "Yuki Tsunoda",
+    "VER": "Max Verstappen"
+}
+
+
 # Page configuration
 st.set_page_config(
     page_title="F1 Race Outcome Predictor",
@@ -67,15 +91,6 @@ with open("data/links.json", "r", encoding="utf-8") as f:
 # F1 tracks list 
 F1_TRACKS = {track:val['id'] for track, val in LINKS.items()}
 
-# F1 drivers (2024 season)
-F1_DRIVERS = [
-    "Max Verstappen", "Yuki Tsunoda", "Kimi Antonelli", "George Russell",
-    "Charles Leclerc", "Lewis Hamilton", "Lando Norris", "Oscar Piastri",
-    "Fernando Alonso", "Lance Stroll", "Esteban Ocon", "Oliver Bearman",
-    "Alexander Albon", "Carlos Sainz", "Nico Hulkenberg", "Gabriel Bortoleto",
-    "Liam Lawson", "Isack Hadjar", "Franco Colapinto", "Pierre Gasly"
-]
-
 # Sidebar for mode selection
 st.sidebar.title("Prediction Mode")
 prediction_mode = st.sidebar.radio(
@@ -100,7 +115,7 @@ if prediction_mode == "Pre-Qualifying":
         )
     
     with col2:
-        st.metric("Selected Track", selected_track.split()[-1])
+        st.metric("Selected Track", selected_track)
     
     # Predict button
     if st.button("🔮 Predict Race Outcome", type="primary", use_container_width=True):
@@ -115,27 +130,175 @@ if prediction_mode == "Pre-Qualifying":
                 # Get prediction from controller
                 ranking = controller.predict(prediction_input)
                 
-                # Display results
-                st.markdown('<div class="prediction-box">', unsafe_allow_html=True)
-                st.subheader("🏆 Predicted Race Ranking")
+                # Add custom CSS for enhanced styling
+                st.markdown("""
+                <style>
+                .prediction-container {
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    border-radius: 15px;
+                    padding: 25px;
+                    margin: 20px 0;
+                    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                }
                 
-                # Create two columns for better display
+                .ranking-title {
+                    text-align: center;
+                    color: white;
+                    font-size: 2.2em;
+                    font-weight: bold;
+                    margin-bottom: 25px;
+                    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+                }
+                
+                .podium-section {
+                    background: rgba(255,255,255,0.1);
+                    border-radius: 12px;
+                    padding: 20px;
+                    margin-bottom: 20px;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .podium-driver {
+                    display: flex;
+                    align-items: center;
+                    padding: 15px 20px;
+                    margin: 8px 0;
+                    border-radius: 10px;
+                    font-size: 1.2em;
+                    font-weight: 600;
+                    transition: transform 0.3s ease;
+                }
+                
+                .podium-driver:hover {
+                    transform: translateX(10px);
+                }
+                
+                .position-1 {
+                    background: linear-gradient(135deg, #FFD700, #FFA500);
+                    color: #333;
+                    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+                }
+                
+                .position-2 {
+                    background: linear-gradient(135deg, #C0C0C0, #A0A0A0);
+                    color: #333;
+                    box-shadow: 0 5px 15px rgba(192, 192, 192, 0.4);
+                }
+                
+                .position-3 {
+                    background: linear-gradient(135deg, #CD7F32, #8B4513);
+                    color: white;
+                    box-shadow: 0 5px 15px rgba(205, 127, 50, 0.4);
+                }
+                
+                .regular-positions {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 15px;
+                    margin-top: 20px;
+                }
+                
+                .driver-position {
+                    display: flex;
+                    align-items: center;
+                    padding: 12px 18px;
+                    margin: 5px 0;
+                    background: rgba(255,255,255,0.15);
+                    border-radius: 8px;
+                    color: white;
+                    font-size: 1.1em;
+                    font-weight: 500;
+                    border-left: 4px solid #00d4ff;
+                    backdrop-filter: blur(5px);
+                    transition: all 0.3s ease;
+                }
+                
+                .driver-position:hover {
+                    background: rgba(255,255,255,0.25);
+                    transform: translateY(-2px);
+                    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                }
+                
+                .position-medal {
+                    font-size: 1.5em;
+                    margin-right: 15px;
+                    min-width: 40px;
+                }
+                
+                .driver-name {
+                    flex-grow: 1;
+                }
+                
+                .section-divider {
+                    height: 2px;
+                    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+                    margin: 20px 0;
+                }
+                </style>
+                """, unsafe_allow_html=True)
+                
+                # Display results with enhanced styling
+                st.markdown('<div class="prediction-container">', unsafe_allow_html=True)
+                st.markdown('<div class="ranking-title">🏆 Predicted Race Ranking</div>', unsafe_allow_html=True)
+                
+                # Create two columns for the entire ranking
                 col1, col2 = st.columns(2)
                 
-                for i, driver in enumerate(ranking):  # Show top 10
-                    position = i + 1
-                    medal = "🥇" if position == 1 else "🥈" if position == 2 else "🥉" if position == 3 else f"{position}."
-                    
-                    if position <= 10:
-                        col1.markdown(f'<div class="driver-position">{position}. {driver}</div>', unsafe_allow_html=True)
-                    else:
-                        col2.markdown(f'<div class="driver-position">{position}. {driver}</div>', unsafe_allow_html=True)
+                # Split all drivers into two columns
+                mid_point = (len(ranking) + 1) // 2
+                col1_drivers = ranking[:mid_point]
+                col2_drivers = ranking[mid_point:]
+                
+                # Column 1
+                with col1:
+                    for i, driver in enumerate(col1_drivers):
+                        position = i + 1
+                        medal = "🥇" if position == 1 else "🥈" if position == 2 else "🥉" if position == 3 else f"{position}."
+                        
+                        if position <= 3:
+                            position_class = f"position-{position}"
+                            st.markdown(f'''
+                            <div class="podium-driver {position_class}">
+                                <div class="position-medal">{medal}</div>
+                                <div class="driver-name">{drivers[driver]}</div>
+                                <div style="font-size: 0.9em; opacity: 0.8;">P{position}</div>
+                            </div>
+                            ''', unsafe_allow_html=True)
+                        else:
+                            st.markdown(f'''
+                            <div class="driver-position">
+                                <div class="position-medal">{medal}</div>
+                                <div class="driver-name">{drivers[driver]}</div>
+                            </div>
+                            ''', unsafe_allow_html=True)
+                
+                # Column 2
+                with col2:
+                    for i, driver in enumerate(col2_drivers):
+                        position = i + 1 + len(col1_drivers)
+                        medal = "🥇" if position == 1 else "🥈" if position == 2 else "🥉" if position == 3 else f"{position}."
+                        
+                        if position <= 3:
+                            position_class = f"position-{position}"
+                            st.markdown(f'''
+                            <div class="podium-driver {position_class}">
+                                <div class="position-medal">{medal}</div>
+                                <div class="driver-name">{drivers[driver]}</div>
+                                <div style="font-size: 0.9em; opacity: 0.8;">P{position}</div>
+                            </div>
+                            ''', unsafe_allow_html=True)
+                        else:
+                            st.markdown(f'''
+                            <div class="driver-position">
+                                <div class="position-medal">{medal}</div>
+                                <div class="driver-name">{drivers[driver]}</div>
+                            </div>
+                            ''', unsafe_allow_html=True)
                 
                 st.markdown('</div>', unsafe_allow_html=True)
                 
-                
             except Exception as e:
-                st.error(f"Error during prediction: {str(e)}")
+                st.error(f"Error making prediction: {str(e)}")
 
 elif prediction_mode == "Post-Qualifying":  # Post-Qualifying mode
     st.markdown('<div class="mode-header">🏁 Post-Qualifying Prediction</div>', unsafe_allow_html=True)
@@ -171,21 +334,172 @@ elif prediction_mode == "Post-Qualifying":  # Post-Qualifying mode
                 st.markdown('<div class="prediction-box">', unsafe_allow_html=True)
                 st.subheader("🏆 Predicted Race Ranking")
                 
-                # Create two columns for better display
+                # Add custom CSS for enhanced styling
+                st.markdown("""
+                <style>
+                .prediction-container {
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    border-radius: 15px;
+                    padding: 25px;
+                    margin: 20px 0;
+                    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                }
+                
+                .ranking-title {
+                    text-align: center;
+                    color: white;
+                    font-size: 2.2em;
+                    font-weight: bold;
+                    margin-bottom: 25px;
+                    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+                }
+                
+                .podium-section {
+                    background: rgba(255,255,255,0.1);
+                    border-radius: 12px;
+                    padding: 20px;
+                    margin-bottom: 20px;
+                    backdrop-filter: blur(10px);
+                }
+                
+                .podium-driver {
+                    display: flex;
+                    align-items: center;
+                    padding: 15px 20px;
+                    margin: 8px 0;
+                    border-radius: 10px;
+                    font-size: 1.2em;
+                    font-weight: 600;
+                    transition: transform 0.3s ease;
+                }
+                
+                .podium-driver:hover {
+                    transform: translateX(10px);
+                }
+                
+                .position-1 {
+                    background: linear-gradient(135deg, #FFD700, #FFA500);
+                    color: #333;
+                    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+                }
+                
+                .position-2 {
+                    background: linear-gradient(135deg, #C0C0C0, #A0A0A0);
+                    color: #333;
+                    box-shadow: 0 5px 15px rgba(192, 192, 192, 0.4);
+                }
+                
+                .position-3 {
+                    background: linear-gradient(135deg, #CD7F32, #8B4513);
+                    color: white;
+                    box-shadow: 0 5px 15px rgba(205, 127, 50, 0.4);
+                }
+                
+                .regular-positions {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 15px;
+                    margin-top: 20px;
+                }
+                
+                .driver-position {
+                    display: flex;
+                    align-items: center;
+                    padding: 12px 18px;
+                    margin: 5px 0;
+                    background: rgba(255,255,255,0.15);
+                    border-radius: 8px;
+                    color: white;
+                    font-size: 1.1em;
+                    font-weight: 500;
+                    border-left: 4px solid #00d4ff;
+                    backdrop-filter: blur(5px);
+                    transition: all 0.3s ease;
+                }
+                
+                .driver-position:hover {
+                    background: rgba(255,255,255,0.25);
+                    transform: translateY(-2px);
+                    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                }
+                
+                .position-medal {
+                    font-size: 1.5em;
+                    margin-right: 15px;
+                    min-width: 40px;
+                }
+                
+                .driver-name {
+                    flex-grow: 1;
+                }
+                
+                .section-divider {
+                    height: 2px;
+                    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+                    margin: 20px 0;
+                }
+                </style>
+                """, unsafe_allow_html=True)
+                
+                # Create two columns for the entire ranking
                 col1, col2 = st.columns(2)
                 
-                for i, driver in enumerate(ranking):  # Show top 10
-                    position = i + 1
-                    
-                    if position <= 10:
-                        col1.markdown(f'<div class="driver-position">{position}. {driver}</div>', unsafe_allow_html=True)
-                    else:
-                        col2.markdown(f'<div class="driver-position">{position}. {driver}</div>', unsafe_allow_html=True)
+                # Split all drivers into two columns
+                mid_point = (len(ranking) + 1) // 2
+                col1_drivers = ranking[:mid_point]
+                col2_drivers = ranking[mid_point:]
+                
+                # Column 1
+                with col1:
+                    for i, driver in enumerate(col1_drivers):
+                        position = i + 1
+                        medal = "🥇" if position == 1 else "🥈" if position == 2 else "🥉" if position == 3 else f"{position}."
+                        
+                        if position <= 3:
+                            position_class = f"position-{position}"
+                            st.markdown(f'''
+                            <div class="podium-driver {position_class}">
+                                <div class="position-medal">{medal}</div>
+                                <div class="driver-name">{drivers[driver]}</div>
+                                <div style="font-size: 0.9em; opacity: 0.8;">P{position}</div>
+                            </div>
+                            ''', unsafe_allow_html=True)
+                        else:
+                            st.markdown(f'''
+                            <div class="driver-position">
+                                <div class="position-medal">{medal}</div>
+                                <div class="driver-name">{drivers[driver]}</div>
+                            </div>
+                            ''', unsafe_allow_html=True)
+                
+                # Column 2
+                with col2:
+                    for i, driver in enumerate(col2_drivers):
+                        position = i + 1 + len(col1_drivers)
+                        medal = "🥇" if position == 1 else "🥈" if position == 2 else "🥉" if position == 3 else f"{position}."
+                        
+                        if position <= 3:
+                            position_class = f"position-{position}"
+                            st.markdown(f'''
+                            <div class="podium-driver {position_class}">
+                                <div class="position-medal">{medal}</div>
+                                <div class="driver-name">{drivers[driver]}</div>
+                                <div style="font-size: 0.9em; opacity: 0.8;">P{position}</div>
+                            </div>
+                            ''', unsafe_allow_html=True)
+                        else:
+                            st.markdown(f'''
+                            <div class="driver-position">
+                                <div class="position-medal">{medal}</div>
+                                <div class="driver-name">{drivers[driver]}</div>
+                            </div>
+                            ''', unsafe_allow_html=True)
                 
                 st.markdown('</div>', unsafe_allow_html=True)
                 
             except Exception as e:
-                st.error(f"Error during prediction: {str(e)}")
+                st.error(f"Error making prediction: {str(e)}")
+
 else:
     st.markdown('<div class="mode-header">🏁 Season Projections</div>', unsafe_allow_html=True)
     
@@ -202,17 +516,170 @@ else:
             # Display results
             st.markdown('<div class="prediction-box">', unsafe_allow_html=True)
             st.subheader("🏆 Predicted Season Ranking")
+            # Add custom CSS for enhanced styling
+            st.markdown("""
+            <style>
+            .prediction-container {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                border-radius: 15px;
+                padding: 25px;
+                margin: 20px 0;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            }
             
-            # Create two columns for better display
+            .ranking-title {
+                text-align: center;
+                color: white;
+                font-size: 2.2em;
+                font-weight: bold;
+                margin-bottom: 25px;
+                text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            }
+            
+            .podium-section {
+                background: rgba(255,255,255,0.1);
+                border-radius: 12px;
+                padding: 20px;
+                margin-bottom: 20px;
+                backdrop-filter: blur(10px);
+            }
+            
+            .podium-driver {
+                display: flex;
+                align-items: center;
+                padding: 15px 20px;
+                margin: 8px 0;
+                border-radius: 10px;
+                font-size: 1.2em;
+                font-weight: 600;
+                transition: transform 0.3s ease;
+            }
+            
+            .podium-driver:hover {
+                transform: translateX(10px);
+            }
+            
+            .position-1 {
+                background: linear-gradient(135deg, #FFD700, #FFA500);
+                color: #333;
+                box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+            }
+            
+            .position-2 {
+                background: linear-gradient(135deg, #C0C0C0, #A0A0A0);
+                color: #333;
+                box-shadow: 0 5px 15px rgba(192, 192, 192, 0.4);
+            }
+            
+            .position-3 {
+                background: linear-gradient(135deg, #CD7F32, #8B4513);
+                color: white;
+                box-shadow: 0 5px 15px rgba(205, 127, 50, 0.4);
+            }
+            
+            .regular-positions {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 15px;
+                margin-top: 20px;
+            }
+            
+            .driver-position {
+                display: flex;
+                align-items: center;
+                padding: 12px 18px;
+                margin: 5px 0;
+                background: rgba(255,255,255,0.15);
+                border-radius: 8px;
+                color: white;
+                font-size: 1.1em;
+                font-weight: 500;
+                border-left: 4px solid #00d4ff;
+                backdrop-filter: blur(5px);
+                transition: all 0.3s ease;
+            }
+            
+            .driver-position:hover {
+                background: rgba(255,255,255,0.25);
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            }
+            
+            .position-medal {
+                font-size: 1.5em;
+                margin-right: 15px;
+                min-width: 40px;
+            }
+            
+            .driver-name {
+                flex-grow: 1;
+            }
+            
+            .section-divider {
+                height: 2px;
+                background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+                margin: 20px 0;
+            }
+            </style>
+            """, unsafe_allow_html=True)
+            
+            # Display results with enhanced styling
+            st.markdown('<div class="prediction-container">', unsafe_allow_html=True)
+            st.markdown('<div class="ranking-title">🏆 Predicted Race Ranking</div>', unsafe_allow_html=True)
+            
+            # Create two columns for the entire ranking
             col1, col2 = st.columns(2)
             
-            for i, row in ranking.iterrows():  # Show top 10
-                position = i + 1
-                
-                if position <= 10:
-                    col1.markdown(f'<div class="driver-position">{position}. {row.Code} - {row.Points}</div>', unsafe_allow_html=True)
-                else:
-                    col2.markdown(f'<div class="driver-position">{position}. {row.Code} - {row.Points}</div>', unsafe_allow_html=True)
+            # Split all drivers into two columns
+            mid_point = (len(ranking) + 1) // 2
+            col1_drivers = ranking.iloc[:mid_point]
+            col2_drivers = ranking.iloc[mid_point:]
+            
+            # Column 1
+            with col1:
+                for i, row in col1_drivers.iterrows():
+                    position = i + 1
+                    medal = "🥇" if position == 1 else "🥈" if position == 2 else "🥉" if position == 3 else f"{position}."
+                    
+                    if position <= 3:
+                        position_class = f"position-{position}"
+                        st.markdown(f'''
+                        <div class="podium-driver {position_class}">
+                            <div class="position-medal">{medal}</div>
+                            <div class="driver-name">{drivers[row.Code]} - {row.Points}</div>
+                            <div style="font-size: 0.9em; opacity: 0.8;">P{position}</div>
+                        </div>
+                        ''', unsafe_allow_html=True)
+                    else:
+                        st.markdown(f'''
+                        <div class="driver-position">
+                            <div class="position-medal">{medal}</div>
+                            <div class="driver-name">{drivers[row.Code]} - {row.Points}</div>
+                        </div>
+                        ''', unsafe_allow_html=True)
+            
+            # Column 2
+            with col2:
+                for i, row in col2_drivers.iterrows():
+                    position = i + 1 
+                    medal = "🥇" if position == 1 else "🥈" if position == 2 else "🥉" if position == 3 else f"{position}."
+                    
+                    if position <= 3:
+                        position_class = f"position-{position}"
+                        st.markdown(f'''
+                        <div class="podium-driver {position_class}">
+                            <div class="position-medal">{medal}</div>
+                            <div class="driver-name">{drivers[row.Code]}</div>
+                            <div style="font-size: 0.9em; opacity: 0.8;">P{position}</div>
+                        </div>
+                        ''', unsafe_allow_html=True)
+                    else:
+                        st.markdown(f'''
+                        <div class="driver-position">
+                            <div class="position-medal">{medal}</div>
+                            <div class="driver-name">{drivers[row.Code]} - {row.Points}</div>
+                        </div>
+                        ''', unsafe_allow_html=True)
             
             st.markdown('</div>', unsafe_allow_html=True)
             
