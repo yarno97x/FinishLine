@@ -1,5 +1,4 @@
-import streamlit as st
-import pandas as pd, json
+import streamlit as st, json
 from datetime import date, datetime
 from controller import Controller
 
