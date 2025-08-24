@@ -1,4 +1,4 @@
-import joblib, pandas as pd, requests, json, random
+import joblib, pandas as pd, requests, json
 from bs4 import BeautifulSoup
 from datetime import date
 
