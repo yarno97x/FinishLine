@@ -2,6 +2,8 @@
 
 ![F1 Predictor Demo](demo.png)
 
+[Try it!](https://yarno97x-finishline-main-rcm3ar.streamlit.app/)
+
 The **F1 Race Outcome Predictor** uses machine learning to predict Formula 1 race results.  
 It leverages both **Neural Networks** and **Random Forests**, trained on historical race data (drivers, teams, qualifying sessions, and past race performances).  
 
@@ -24,4 +26,6 @@ The tool supports three prediction modes:
 - scikit-learn (Random Forests, preprocessing)  
 - pandas / numpy (data wrangling)  
 - matplotlib / seaborn (visualization, optional)  
+
+
 
