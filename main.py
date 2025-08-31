@@ -108,7 +108,7 @@ if prediction_mode == "Pre-Qualifying":
     with col1:
         selected_track = st.selectbox(
             "Select F1 Track:",
-            F1_TRACKS.keys(),
+            [track for track in F1_TRACKS.keys() if int(date.today().strftime("%j")) + 1 < LINKS[track]['day']],
             index=0,
             help="Choose the track where the race will take place"
         )
@@ -308,7 +308,7 @@ elif prediction_mode == "Post-Qualifying":  # Post-Qualifying mode
     with col1:
         selected_track = st.selectbox(
             "Select F1 Track:",
-            F1_TRACKS.keys(),
+            [track for track in F1_TRACKS.keys() if int(date.today().strftime("%j")) + 1 >= LINKS[track]['day']],
             index=0,
             help="Choose the track where the race will take place"
         )
