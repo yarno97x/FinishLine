@@ -58,7 +58,7 @@ class Controller:
         df.Team = df.Team.replace(self.team_map)
         df.TrackId = df.TrackId.astype(int)
         df = df.dropna()
-        print(df)
+        # print(df)
         df.loc[df["Grid"].isin(["\\N", "DQ", "NC"]), "Grid"] = 21
         df.loc[:, "Grid"] = df.Grid.astype(float).astype("Int64")
         df.loc[:, "Q1"] = df["Q1"].apply(self.convert_time)
@@ -70,7 +70,7 @@ class Controller:
     def preprocess_pre(self, df):
         df.Team = df.Team.replace(self.team_map)
         df.TrackId = df.TrackId.astype(int)
-        print(df)
+        # print(df)
         return self.preprocessor_pre.transform(df)
     
     def extract_qualifying(self, link):
