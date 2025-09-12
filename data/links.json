@@ -2,145 +2,121 @@
      "Australia": {
           "id": 1,
           "day": 75,
-          "url_quali": "https://www.formula1.com/en/results/2025/races/1254/australia/qualifying",
-          "url_race": "https://www.formula1.com/en/results/2025/races/1254/australia/race-result"
+          "url": "https://www.formula1.com/en/results/2025/races/1254/australia"
      },
      "China": {
           "id": 17,
           "day": 82,
-          "url_quali": "https://www.formula1.com/en/results/2025/races/1255/china/qualifying",
-          "url_race": "https://www.formula1.com/en/results/2025/races/1255/china/race-result"
+          "url": "https://www.formula1.com/en/results/2025/races/1255/china"
      },
      "Japan": {
           "id": 22,
           "day": 96,
-          "url_quali": "https://www.formula1.com/en/results/2025/races/1256/japan/qualifying",
-          "url_race": "https://www.formula1.com/en/results/2025/races/1256/japan/race-result"
+          "url": "https://www.formula1.com/en/results/2025/races/1256/japan"
      },
      "Bahrain": {
           "id": 3,
           "day": 103,
-          "url_quali": "https://www.formula1.com/en/results/2025/races/1257/bahrain/qualifying",
-          "url_race": "https://www.formula1.com/en/results/2025/races/1257/bahrain/race-result"
+          "url": "https://www.formula1.com/en/results/2025/races/1257/bahrain"
      },
      "Saudi Arabia": {
           "id": 77,
           "day": 110,
-          "url_quali": "https://www.formula1.com/en/results/2025/races/1258/saudi-arabia/qualifying",
-          "url_race": "https://www.formula1.com/en/results/2025/races/1258/saudi-arabia/race-result"
+          "url": "https://www.formula1.com/en/results/2025/races/1258/saudi-arabia"
      },
      "Miami": {
           "id": 79,
           "day": 124,
-          "url_quali": "https://www.formula1.com/en/results/2025/races/1259/miami/qualifying",
-          "url_race": "https://www.formula1.com/en/results/2025/races/1259/miami/race-result"
+          "url": "https://www.formula1.com/en/results/2025/races/1259/miami"
      },
      "Emilia-Romagna": {
           "id": 21,
           "day": 138,
-          "url_quali": "https://www.formula1.com/en/results/2025/races/1260/emiliaromagna/qualifying",
-          "url_race": "https://www.formula1.com/en/results/2025/races/1260/emiliaromagna/race-result"
+          "url": "https://www.formula1.com/en/results/2025/races/1260/emiliaromagna"
      },
      "Monaco": {
           "id": 6,
           "day": 145,
-          "url_quali": "https://www.formula1.com/en/results/2025/races/1261/monaco/qualifying",
-          "url_race": "https://www.formula1.com/en/results/2025/races/1261/monaco/race-result"
+          "url": "https://www.formula1.com/en/results/2025/races/1261/monaco"
      },
      "Spain": {
           "id": 4,
           "day": 152,
-          "url_quali": "https://www.formula1.com/en/results/2025/races/1262/spain/qualifying",
-          "url_race": "https://www.formula1.com/en/results/2025/races/1262/spain/race-result"
+          "url": "https://www.formula1.com/en/results/2025/races/1262/spain"
      },
      "Canada": {
           "id": 7,
           "day": 166,
-          "url_quali": "https://www.formula1.com/en/results/2025/races/1263/canada/qualifying",
-          "url_race": "https://www.formula1.com/en/results/2025/races/1263/canada/race-result"
+          "url": "https://www.formula1.com/en/results/2025/races/1263/canada"
      },
      "Austria": {
           "id": 70,
           "day": 180,
-          "url_quali": "https://www.formula1.com/en/results/2025/races/1264/austria/qualifying",
-          "url_race": "https://www.formula1.com/en/results/2025/races/1264/austria/race-result"
+          "url": "https://www.formula1.com/en/results/2025/races/1264/austria"
      },
      "Great Britain": {
           "id": 9,
           "day": 187,
-          "url_quali": "https://www.formula1.com/en/results/2025/races/1277/great-britain/qualifying",
-          "url_race": "https://www.formula1.com/en/results/2025/races/1277/great-britain/race-result"
+          "url": "https://www.formula1.com/en/results/2025/races/1277/great-britain"
      },
      "Belgium": {
           "id": 13,
           "day": 208,
-          "url_quali": "https://www.formula1.com/en/results/2025/races/1265/belgium/qualifying",
-          "url_race": "https://www.formula1.com/en/results/2025/races/1265/belgium/race-result"
+          "url": "https://www.formula1.com/en/results/2025/races/1265/belgium"
      },
      "Hungary": {
           "id": 11,
           "day": 215,
-          "url_quali": "https://www.formula1.com/en/results/2025/races/1266/hungary/qualifying",
-          "url_race": "https://www.formula1.com/en/results/2025/races/1266/hungary/race-result"
+          "url": "https://www.formula1.com/en/results/2025/races/1266/hungary"
      },
      "Netherlands": {
           "id": 39,
           "day": 243,
-          "url_quali": "https://www.formula1.com/en/results/2025/races/1267/netherlands/qualifying",
-          "url_race": "https://www.formula1.com/en/results/2025/races/1267/netherlands/race-result"
+          "url": "https://www.formula1.com/en/results/2025/races/1267/netherlands"
      },
      "Italy": {
           "id": 14,
           "day": 250,
-          "url_quali": "https://www.formula1.com/en/results/2025/races/1268/italy/qualifying",
-          "url_race": "https://www.formula1.com/en/results/2025/races/1268/italy/race-result"
+          "url": "https://www.formula1.com/en/results/2025/races/1268/italy"
      },
      "Azerbaijan": {
           "id": 73,
           "day": 264,
-          "url_quali": "https://www.formula1.com/en/results/2025/races/1269/azerbaijan/qualifying",
-          "url_race": "https://www.formula1.com/en/results/2025/races/1269/azerbaijan/race-result"
+          "url": "https://www.formula1.com/en/results/2025/races/1269/azerbaijan"
      },
      "Singapore": {
           "id": 15,
           "day": 278,
-          "url_quali": "https://www.formula1.com/en/results/2025/races/1270/singapore/qualifying",
-          "url_race": "https://www.formula1.com/en/results/2025/races/1270/singapore/race-result"
+          "url": "https://www.formula1.com/en/results/2025/races/1270/singapore"
      },
      "United States": {
           "id": 69,
           "day": 292,
-          "url_quali": "https://www.formula1.com/en/results/2025/races/1271/united-states/qualifying",
-          "url_race": "https://www.formula1.com/en/results/2025/races/1271/united-states/race-result"
+          "url": "https://www.formula1.com/en/results/2025/races/1271/united-states"
      },
      "Mexico": {
           "id": 32,
           "day": 299,
-          "url_quali": "https://www.formula1.com/en/results/2025/races/1272/mexico/qualifying",
-          "url_race": "https://www.formula1.com/en/results/2025/races/1272/mexico/race-result"
+          "url": "https://www.formula1.com/en/results/2025/races/1272/mexico"
      },
      "Brazil": {
           "id": 18,
           "day": 313,
-          "url_quali": "https://www.formula1.com/en/results/2025/races/1273/brazil/qualifying",
-          "url_race": "https://www.formula1.com/en/results/2025/races/1273/brazil/race-result"
+          "url": "https://www.formula1.com/en/results/2025/races/1273/brazil"
      },
      "Las Vegas": {
           "id": 44,
           "day": 326,
-          "url_quali": "https://www.formula1.com/en/results/2025/races/1274/las-vegas/qualifying",
-          "url_race": "https://www.formula1.com/en/results/2025/races/1274/las-vegas/race-result"
+          "url": "https://www.formula1.com/en/results/2025/races/1274/las-vegas"
      },
      "Qatar": {
           "id": 78,
           "day": 334,
-          "url_quali": "https://www.formula1.com/en/results/2025/races/1275/qatar/qualifying",
-          "url_race": "https://www.formula1.com/en/results/2025/races/1275/qatar/race-result"
+          "url": "https://www.formula1.com/en/results/2025/races/1275/qatar"
      },
      "Abu Dhabi": {
           "id": 24,
           "day": 341,
-          "url_quali": "https://www.formula1.com/en/results/2025/races/1276/united-arab-emirates/qualifying",
-          "url_race": "https://www.formula1.com/en/results/2025/races/1276/united-arab-emirates/race-result"
+          "url": "https://www.formula1.com/en/results/2025/races/1276/united-arab-emirates"
      }
 }
