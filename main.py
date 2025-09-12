@@ -323,7 +323,7 @@ elif prediction_mode == "Post-Qualifying":  # Post-Qualifying mode
                 prediction_input = {
                     "mode": "post_qualifying",
                     "track": F1_TRACKS[selected_track],
-                    "link": LINKS[selected_track]["url_quali"]
+                    "link": LINKS[selected_track]["url"] + "/qualifying"
                 }
                 
                 # Get prediction from controller
