@@ -90,7 +90,6 @@ class Controller:
         return data
 
     def predict(self, args):
-        # print(args)
         if args['mode'] == "pre_qualifying":
             df = pd.concat([self.drivers, pd.Series([args['track']] * len(self.drivers), name="TrackId")], axis=1)
             df_processed = self.preprocess_pre(df)
