@@ -20,29 +20,11 @@ points_map = {
 
 class Controller:
     def __init__(self):
-        self.nn_pre_quali = joblib.load("models/nn_pre_quali.pkl")
-        self.nn_post_quali = joblib.load("models/nn_post_quali.pkl")
-        self.rf_pre_quali = joblib.load("models/rf_pre_quali.pkl")
-        self.rf_post_quali = joblib.load("models/rf_post_quali.pkl")
+        self.nn_pre_quali = joblib.load("models/pre_quali.pkl")
+        self.nn_post_quali = joblib.load("models/post_quali.pkl")
         self.drivers = pd.read_csv('data/drivers.csv')
         self.preprocessor_post = joblib.load("models/preprocessor_post.pkl")
         self.preprocessor_pre = joblib.load("models/preprocessor_pre.pkl")
-        self.team_map = {
-            'Alpine F1 Team': "Alpine",
-            'Haas F1 Team': "Haas",
-            'Toro Rosso': "Racing Bulls",
-            'Red Bull Racing': "Red Bull",
-            'RB F1 Team': "Red Bull",
-            'Racing Point': "Aston Martin",
-            'Red Bull Racing Honda RBPT': "Red Bull",
-            'Alpine Renault': "Alpine",
-            'Aston Martin Aramco Mercedes':'Aston Martin',
-            'McLaren Mercedes':"McLaren",
-            'Williams Mercedes': "Williams",
-            'AlphaTauri Honda RBPT': "Racing Bulls",
-            'Haas Ferrari':"Ferrari",
-            'RB Honda RBPT':"Red Bull"
-        }
 
     @staticmethod
     def convert_time(s):
@@ -54,11 +36,34 @@ class Controller:
             if len(s) == len("1:00:000"):
                 return float(int(s[-3:]))/1000 + int(s[-6:-4]) + 60 * int(s[0])
 
+    @staticmethod    
+    def convert_team(team):
+        team = team.lower()
+        if "williams" in team:
+            return "Williams"
+        elif "haas" in team:
+            return "Haas"
+        elif "mercedes" in team:
+            return "Mercedes"
+        elif "red bull" in team:
+            return "Red Bull"
+        elif "ferrari" in team:
+            return "Ferrari"
+        elif "sauber" in team:
+            return "Sauber"
+        elif "aston" in team:
+            return "Aston Martin"
+        elif "alpine" in team:
+            return "Alpine"
+        elif any([x in team for x in ["toro", "tauri", "racing bull"]]):
+            return "VCARB"
+        else:
+            return "McLaren"
+
     def preprocess_post(self, df):
-        df.Team = df.Team.replace(self.team_map)
+        df.Team = df.Team.apply(Controller.convert_team)
         df.TrackId = df.TrackId.astype(int)
         df = df.dropna()
-        # print(df)
         df.loc[df["Grid"].isin(["\\N", "DQ", "NC"]), "Grid"] = 21
         df.loc[:, "Grid"] = df.Grid.astype(float).astype("Int64")
         df.loc[:, "Q1"] = df["Q1"].apply(self.convert_time)
@@ -68,9 +73,8 @@ class Controller:
         return self.preprocessor_post.transform(df)
 
     def preprocess_pre(self, df):
-        df.Team = df.Team.replace(self.team_map)
+        df.Team = df.Team.apply(Controller.convert_team)
         df.TrackId = df.TrackId.astype(int)
-        # print(df)
         return self.preprocessor_pre.transform(df)
     
     def extract_qualifying(self, link):
@@ -86,20 +90,19 @@ class Controller:
         return data
 
     def predict(self, args):
+        # print(args)
         if args['mode'] == "pre_qualifying":
             df = pd.concat([self.drivers, pd.Series([args['track']] * len(self.drivers), name="TrackId")], axis=1)
             df_processed = self.preprocess_pre(df)
             pred_nn = self.nn_pre_quali.predict(df_processed)
-            pred_rf = self.rf_pre_quali.predict(df_processed)
-            ranking = pd.concat([df.Code, pd.DataFrame(pred_nn + pred_rf, columns=["Pred"])], axis=1).sort_values(by="Pred")
+            ranking = pd.concat([df.Code, pd.DataFrame(pred_nn, columns=["Pred"])], axis=1).sort_values(by="Pred")
             return list(ranking.Code)
         else:
             df = pd.merge(self.drivers, self.extract_qualifying(args['link']), how='left', on=["Code"])
             df = pd.concat([df, pd.Series([args['track']] * len(self.drivers), name="TrackId")], axis=1)
             df_processed = self.preprocess_post(df)
             pred_nn = self.nn_post_quali.predict(df_processed)
-            pred_rf = self.rf_post_quali.predict(df_processed)
-            ranking = pd.concat([df.Code, pd.DataFrame(pred_nn + pred_rf, columns=["Pred"])], axis=1).sort_values(by="Pred")
+            ranking = pd.concat([df.Code, pd.DataFrame(pred_nn, columns=["Pred"])], axis=1).sort_values(by="Pred")
 
             return list(ranking.Code)
         
